@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{% block title %}PolicyGen{% endblock %}</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    /* Minimal reset + layout */
+    body { font-family: Inter, system-ui, Arial, sans-serif; margin:0; padding:0; background:#f7f8fb; color:#111; }
+    .container { max-width:1000px; margin:28px auto; padding:18px; background:#fff; border-radius:8px; box-shadow:0 6px 18px rgba(20,20,50,0.06); }
+    header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; }
+    nav a { margin-right:12px; color:#0b57d0; text-decoration:none; font-weight:600; }
+    nav a:hover { text-decoration:underline; }
+    .small { font-size:0.85rem; color:#556; }
+    .btn { display:inline-block; padding:8px 12px; border-radius:6px; background:#0b57d0; color:#fff; text-decoration:none; font-weight:600; }
+    .btn.alt { background:#e6eefc; color:#0b57d0; border:1px solid rgba(11,87,208,0.08); }
+    form .field { margin-bottom:12px; }
+    label { display:block; font-weight:600; margin-bottom:6px; }
+    input[type=text], textarea, select { width:100%; padding:8px 10px; border:1px solid #e4e7ee; border-radius:6px; background:#fff; }
+    textarea { min-height:200px; font-family:inherit; }
+    .card { padding:12px; border-radius:8px; background:#fafbff; border:1px solid #eef2ff; margin-bottom:12px; }
+    .meta { font-size:0.85rem; color:#556; margin-top:6px; }
+    .controls-list { font-family:monospace; font-size:0.95rem; color:#333; background:#fff; padding:8px; border-radius:6px; border:1px dashed #e6e9f0; }
+    .message { padding:10px; border-radius:6px; margin-bottom:12px; }
+    .message.success { background:#e6f9ee; color:#0b6f3f; border:1px solid #cfeeda; }
+    .message.warn { background:#fff4e6; color:#7a5200; border:1px solid #ffe9c9; }
+    .message.error { background:#ffecec; color:#972020; border:1px solid #ffd4d4; }
+    .row { display:flex; gap:16px; }
+    .col { flex:1; }
+    footer { margin-top:18px; font-size:0.85rem; color:#667; text-align:center; }
+    a.smalllink { color:#444; text-decoration:underline; font-size:0.85rem; }
+    pre { white-space:pre-wrap; word-wrap:break-word; font-family:inherit; background:#f6f8fb; padding:12px; border-radius:6px; border:1px solid #eef2ff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1 style="margin:0">PolicyGen</h1>
+        <div class="small">ISO 27001 policy doc_generator — Django prototype</div>
+      </div>
+      <nav>
+        <a href="{% url 'doc_generator:template_list' %}">Templates</a>
+        <a href="{% url 'doc_generator:generate' %}">Generate</a>
+        <a href="{% url 'doc_generator:batch_generate' %}">Batch</a>
+        <a href="{% url 'doc_generator:history' %}">History</a>
+        {% if user.is_authenticated %}
+          <span class="small">Hi, {{ user.get_username }}</span>
+          <a href="{% url 'logout' %}" class="smalllink">Logout</a>
+        {% else %}
+          <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+      </nav>
+    </header>
+
+    {% if messages %}
+      {% for msg in messages %}
+        <div class="message {% if msg.tags %}{{ msg.tags }}{% endif %}">
+          {{ msg }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {% block content %}{% endblock %}
+
+    <footer>
+      Prototype — human-in-the-loop required. Outputs must be reviewed before use.
+    </footer>
+  </div>
+</body>
+</html>
+

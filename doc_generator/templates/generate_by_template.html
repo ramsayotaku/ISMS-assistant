@@ -1,0 +1,19 @@
+{% extends "doc_generator/base.html" %}
+{% block title %}Generate Policy — PolicyGen{% endblock %}
+{% block content %}
+  <h2>Generate Policy from Template</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div style="margin-top:8px;">
+      <button class="btn" type="submit">Generate</button>
+      <a class="btn alt" href="{% url 'doc_generator:template_list' %}" style="margin-left:8px">Templates</a>
+    </div>
+  </form>
+
+  <div style="margin-top:16px;">
+    <div class="small">Tip: choose a template, set context, then press Generate. Outputs saved to History.</div>
+  </div>
+{% endblock %}
+

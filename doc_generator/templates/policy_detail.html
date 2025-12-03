@@ -1,0 +1,40 @@
+{% extends "doc_generator/base.html" %}
+{% block title %}Policy — {{ policy.title }}{% endblock %}
+{% block content %}
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <div>
+      <h2 style="margin:0">{{ policy.title }}</h2>
+      <div class="small">Generated: {{ policy.created_at|date:"Y-m-d H:i" }} • Model: {{ policy.model_used }}</div>
+      <div class="meta">Mapped controls: <span class="controls-list">
+        {% for c in policy.mapped_controls.all %}{{ c.control_id }}{% if not forloop.last %}, {% endif %}{% endfor %}
+      </span></div>
+    </div>
+    <div>
+      <a class="btn" href="{% url 'doc_generator:policy_edit' policy.pk %}">Edit</a>
+      <a class="btn alt" href="{% url 'doc_generator:history' %}">Back to History</a>
+    </div>
+  </div>
+
+  <div style="margin-top:12px;">
+    <div class="card">
+      <strong>Generated Text</strong>
+      <pre>{{ policy.generated_text }}</pre>
+    </div>
+
+    {% if policy.metadata.prompt %}
+      <div class="card">
+        <strong>Prompt (snapshot)</strong>
+        <pre>{{ policy.metadata.prompt }}</pre>
+      </div>
+    {% endif %}
+
+    {% if policy.validation %}
+      <div class="card">
+        <strong>Validation</strong>
+        <div class="small">Coverage: {{ policy.validation.result.coverage|default:"N/A" }}</div>
+        <pre>{{ policy.validation.result|safe }}</pre>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
+

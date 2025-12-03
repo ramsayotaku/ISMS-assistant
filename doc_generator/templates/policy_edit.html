@@ -1,0 +1,15 @@
+{% extends "doc_generator/base.html" %}
+{% block title %}Edit Policy — {{ object.title }}{% endblock %}
+{% block content %}
+  <h2>Edit Generated Policy</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div>
+      <button class="btn" type="submit">Save</button>
+      <a class="btn alt" href="{% url 'doc_generator:policy_detail' object.pk %}" style="margin-left:8px">Cancel</a>
+    </div>
+  </form>
+{% endblock %}
+

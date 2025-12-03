@@ -1,0 +1,18 @@
+{% extends "doc_generator/base.html" %}
+{% block title %}Add/Edit Template — PolicyGen{% endblock %}
+{% block content %}
+  <h2>{% if object %}Edit{% else %}Add{% endif %} Policy Template</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn" type="submit">Save</button>
+    <a href="{% url 'doc_generator:template_list' %}" class="btn alt" style="margin-left:8px">Cancel</a>
+  </form>
+
+  <div style="margin-top:18px;" class="card">
+    <strong>Prompt template tips</strong>
+    <p class="small">Use placeholders: <code>{POLICY_NAME}</code>, <code>{CONTROL_SUMMARY}</code>, <code>{ORG_NAME}</code>, <code>{MAX_WORDS}</code>.</p>
+  </div>
+{% endblock %}
+

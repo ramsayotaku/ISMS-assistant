@@ -1,0 +1,36 @@
+{% extends "doc_generator/base.html" %}
+{% block title %}Login — PolicyGen{% endblock %}
+{% block content %}
+  <h2>Login</h2>
+
+  {% if form.errors %}
+    <div class="message error">
+      Login failed — please check your username and password.
+    </div>
+  {% endif %}
+
+  <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <div class="field">
+      <label for="id_username">Username</label>
+      <input type="text" name="username" autofocus required id="id_username" value="{{ request.POST.username }}">
+    </div>
+
+    <div class="field">
+      <label for="id_password">Password</label>
+      <input type="password" name="password" required id="id_password">
+    </div>
+
+    <div style="margin-top:10px;">
+      <button class="btn" type="submit">Login</button>
+      <a class="btn alt" href="{% url 'doc_generator:template_list' %}" style="margin-left:8px">Back</a>
+    </div>
+
+    <input type="hidden" name="next" value="{{ next }}">
+  </form>
+
+  <div style="margin-top:14px" class="small">
+    Use the Django admin user or create one with <code>python manage.py createsuperuser</code>.
+  </div>
+{% endblock %}
+

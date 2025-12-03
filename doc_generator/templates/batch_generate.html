@@ -1,0 +1,20 @@
+{% extends "doc_generator/base.html" %}
+{% block title %}Batch Generate — PolicyGen{% endblock %}
+{% block content %}
+  <h2>Batch Generate Policies</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div>
+      <button class="btn" type="submit">Generate Selected</button>
+      <a class="btn alt" href="{% url 'doc_generator:template_list' %}" style="margin-left:8px">Back</a>
+    </div>
+  </form>
+
+  <div style="margin-top:14px" class="card">
+    <strong>Notes</strong>
+    <p class="small">Batch generation will create one GeneratedPolicy per selected template and store mapping to its controls. Use sparingly (API usage & cost).</p>
+  </div>
+{% endblock %}
+
