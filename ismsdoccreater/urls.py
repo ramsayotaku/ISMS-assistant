@@ -25,7 +25,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include("django.contrib.auth.urls")),
-    path('doc_generator/', include("doc_generator.urls")),
+    path('doc_generator/', include("doc_generator.urls", namespace="generator")),
     path("", RedirectView.as_view(pattern_name="doc_generator:template_list", permanent=False)),
 ]
 

@@ -13,7 +13,7 @@ from .services.prompt_builder import build_prompt
 
 class PolicyTemplateListView(LoginRequiredMixin, ListView):
     model = PolicyTemplate
-    template_name = "generator/policytemplate_list.html"
+    template_name = "doc_generator/policytemplate_list.html"
     context_object_name = "templates"
     paginate_by = 20
 
@@ -21,21 +21,21 @@ class PolicyTemplateListView(LoginRequiredMixin, ListView):
 class PolicyTemplateCreateView(LoginRequiredMixin, CreateView):
     model = PolicyTemplate
     form_class = PolicyTemplateForm
-    template_name = "generator/policytemplate_form.html"
-    success_url = reverse_lazy("generator:template_list")
+    template_name = "doc_generator/policytemplate_form.html"
+    success_url = reverse_lazy("doc_generator:template_list")
 
 
 class PolicyTemplateUpdateView(LoginRequiredMixin, UpdateView):
     model = PolicyTemplate
     form_class = PolicyTemplateForm
-    template_name = "generator/policytemplate_form.html"
-    success_url = reverse_lazy("generator:template_list")
+    template_name = "doc_generator/policytemplate_form.html"
+    success_url = reverse_lazy("doc_generator:template_list")
 
 
 class GenerateByTemplateView(LoginRequiredMixin, FormView):
-    template_name = "generator/generate_by_template.html"
+    template_name = "doc_generator/generate_by_template.html"
     form_class = GenerateByTemplateForm
-    success_url = reverse_lazy("generator:history")
+    success_url = reverse_lazy("doc_generator:history")
 
     def form_valid(self, form):
         ptemplate = form.cleaned_data["policy_template"]
@@ -112,13 +112,13 @@ class GenerateByTemplateView(LoginRequiredMixin, FormView):
         gp.save()
 
         messages.success(self.request, f"Policy generated: {gp.title}")
-        return redirect("generator:policy_detail", pk=gp.id)
+        return redirect("doc_generator:policy_detail", pk=gp.id)
 
 
 class BatchGenerateView(LoginRequiredMixin, FormView):
-    template_name = "generator/batch_generate.html"
+    template_name = "doc_generator/batch_generate.html"
     form_class = BatchGenerateForm
-    success_url = reverse_lazy("generator:history")
+    success_url = reverse_lazy("doc_generator:history")
 
     def form_valid(self, form):
         templates = form.cleaned_data["templates"]
@@ -194,13 +194,13 @@ class BatchGenerateView(LoginRequiredMixin, FormView):
 
 class PolicyDetailView(LoginRequiredMixin, DetailView):
     model = GeneratedPolicy
-    template_name = "generator/policy_detail.html"
+    template_name = "doc_generator/policy_detail.html"
     context_object_name = "policy"
 
 
 class HistoryView(LoginRequiredMixin, ListView):
     model = GeneratedPolicy
-    template_name = "generator/history.html"
+    template_name = "doc_generator/history.html"
     context_object_name = "policies"
     paginate_by = 25
 
@@ -213,9 +213,9 @@ class HistoryView(LoginRequiredMixin, ListView):
 class GeneratedPolicyEditView(LoginRequiredMixin, UpdateView):
     model = GeneratedPolicy
     form_class = GeneratedPolicyEditForm
-    template_name = "generator/policy_edit.html"
+    template_name = "doc_generator/policy_edit.html"
 
     def get_success_url(self):
         messages.success(self.request, "Policy updated.")
-        return reverse_lazy("generator:policy_detail", kwargs={"pk": self.object.pk})
+        return reverse_lazy("doc_generator:policy_detail", kwargs={"pk": self.object.pk})
 

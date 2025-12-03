@@ -1,4 +1,4 @@
-{% extends "generator/base.html" %}
+{% extends "doc_generator/base.html" %}
 {% block title %}History — PolicyGen{% endblock %}
 {% block content %}
   <h2>Your Generated Policies</h2>
@@ -8,13 +8,13 @@
       <div class="card">
         <div style="display:flex; justify-content:space-between;">
           <div>
-            <strong><a href="{% url 'generator:policy_detail' p.pk %}">{{ p.title }}</a></strong>
+            <strong><a href="{% url 'doc_generator:policy_detail' p.pk %}">{{ p.title }}</a></strong>
             <div class="small">Created: {{ p.created_at|date:"Y-m-d H:i" }} • Model: {{ p.model_used }} • Tokens: {{ p.tokens|default:"-" }}</div>
             <div class="meta">Controls: <span class="controls-list">{% for c in p.mapped_controls.all %}{{ c.control_id }}{% if not forloop.last %}, {% endif %}{% endfor %}</span></div>
           </div>
           <div style="text-align:right">
-            <a class="btn" href="{% url 'generator:policy_detail' p.pk %}">View</a>
-            <a class="btn alt" href="{% url 'generator:policy_edit' p.pk %}" style="margin-left:8px">Edit</a>
+            <a class="btn" href="{% url 'doc_generator:policy_detail' p.pk %}">View</a>
+            <a class="btn alt" href="{% url 'doc_generator:policy_edit' p.pk %}" style="margin-left:8px">Edit</a>
           </div>
         </div>
       </div>
