@@ -104,3 +104,56 @@ class ValidationResult(models.Model):
     def __str__(self):
         return f"Validation for {self.generated_policy_id} - {self.created_at.isoformat()}"
 
+# add at top imports if not present
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
+# ---- CompanyProfile model ----
+class CompanyProfile(models.Model):
+    """
+    Stores organizational context that can be reused when generating policies.
+    One profile per user (optional) but can be extended for multi-profile support.
+    """
+    owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name="company_profile")
+    org_name = models.CharField(max_length=200, default="Amoeba Labs Pvt. Ltd.")
+    industry = models.CharField(max_length=120, blank=True, help_text="e.g., SaaS, FinTech, Healthcare")
+    size = models.CharField(max_length=32, choices=[("small","Small"),("medium","Medium"),("large","Large")], default="small")
+    office_country = models.CharField(max_length=120, blank=True)
+    office_city = models.CharField(max_length=120, blank=True)
+    has_physical_office = models.BooleanField(default=True)
+    deployment = models.CharField(max_length=40, choices=[("cloud","Cloud"),("on-prem","On-Prem"),("hybrid","Hybrid")], default="cloud")
+    critical_assets = models.TextField(blank=True, help_text="Comma-separated key assets, e.g., 'Customer PII, Source Code'")
+    employment_model = models.CharField(max_length=64, choices=[("fulltime","Full-time"),("mix","Mixed"),("contractors","Contractors heavy")], default="mix")
+    background_checks = models.CharField(max_length=64, choices=[("all","All"),("ft_only","Full-time only"),("none","None")], default="ft_only")
+    security_training_frequency = models.CharField(max_length=64, choices=[("annual","Annual"),("quarterly","Quarterly"),("ad_hoc","Ad-hoc")], default="annual")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def brief(self):
+        parts = [self.org_name]
+        if self.office_city and self.office_country:
+            parts.append(f"{self.office_city}, {self.office_country}")
+        return " — ".join(parts)
+
+    def to_prompt_block(self):
+        """
+        Return a compact string suitable for inserting into prompts.
+        """
+        lines = [
+            f"Organization: {self.org_name}",
+            f"Industry: {self.industry or 'N/A'}",
+            f"Size: {self.size}",
+            f"Location: {self.office_city or 'N/A'}, {self.office_country or 'N/A'}",
+            f"Physical office: {'Yes' if self.has_physical_office else 'No'}",
+            f"Deployment: {self.deployment}",
+            f"Critical assets: {self.critical_assets or 'N/A'}",
+            f"Employment model: {self.employment_model}",
+            f"Background checks: {self.background_checks}",
+            f"Training frequency: {self.security_training_frequency}",
+        ]
+        return "\n".join(lines)
+
+    def __str__(self):
+        return f"CompanyProfile({self.owner}) - {self.org_name}"
+
