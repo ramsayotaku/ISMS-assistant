@@ -1,8 +1,9 @@
 from django import forms
 from .models import PolicyTemplate, GeneratedPolicy, CompanyProfile
 
-class CompanyContextFieldsMixin:
-    """Reusable context fields to include in generation forms."""
+
+class GenerateByTemplateForm(forms.Form):
+    # Company/context fields (explicit)
     org_name = forms.CharField(required=False, initial="Amoeba Labs Pvt. Ltd.", label="Organization Name")
     industry = forms.CharField(required=False, label="Industry", help_text="e.g., SaaS, FinTech")
     size = forms.ChoiceField(choices=[("small","Small"),("medium","Medium"),("large","Large")], initial="small")
@@ -16,18 +17,11 @@ class CompanyContextFieldsMixin:
     security_training_frequency = forms.ChoiceField(choices=[("annual","Annual"),("quarterly","Quarterly"),("ad_hoc","Ad-hoc")], initial="annual")
     save_profile = forms.BooleanField(required=False, initial=False, label="Save this context to my profile")
 
-
-class GenerateByTemplateForm(forms.Form):
-    policy_template = forms.ModelChoiceField(
-        queryset=PolicyTemplate.objects.all(),
-        required=True,
-        label="Policy Template"
-    )
+    policy_template = forms.ModelChoiceField(queryset=PolicyTemplate.objects.all(), required=True, label="Policy Template")
     max_words = forms.IntegerField(required=False, initial=600, min_value=100, max_value=5000)
 
     def clean(self):
         cleaned = super().clean()
-        # ensure max_words falls back to template default if not provided
         if not cleaned.get("max_words") and cleaned.get("policy_template"):
             cleaned["max_words"] = cleaned["policy_template"].default_max_words
         return cleaned
