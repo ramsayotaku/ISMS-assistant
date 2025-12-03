@@ -1,5 +1,21 @@
 from django import forms
-from .models import PolicyTemplate, GeneratedPolicy
+from .models import PolicyTemplate, GeneratedPolicy, CompanyProfile
+
+class CompanyContextFieldsMixin:
+    """Reusable context fields to include in generation forms."""
+    org_name = forms.CharField(required=False, initial="Amoeba Labs Pvt. Ltd.", label="Organization Name")
+    industry = forms.CharField(required=False, label="Industry", help_text="e.g., SaaS, FinTech")
+    size = forms.ChoiceField(choices=[("small","Small"),("medium","Medium"),("large","Large")], initial="small")
+    office_country = forms.CharField(required=False, label="Office Country")
+    office_city = forms.CharField(required=False, label="Office City")
+    has_physical_office = forms.BooleanField(required=False, initial=True, label="Has physical office")
+    deployment = forms.ChoiceField(choices=[("cloud","Cloud"),("on-prem","On-Prem"),("hybrid","Hybrid")], initial="cloud")
+    critical_assets = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows":3}), label="Critical assets", help_text="Comma-separated")
+    employment_model = forms.ChoiceField(choices=[("fulltime","Full-time"),("mix","Mixed"),("contractors","Contractors heavy")], initial="mix")
+    background_checks = forms.ChoiceField(choices=[("all","All"),("ft_only","Full-time only"),("none","None")], initial="ft_only")
+    security_training_frequency = forms.ChoiceField(choices=[("annual","Annual"),("quarterly","Quarterly"),("ad_hoc","Ad-hoc")], initial="annual")
+    save_profile = forms.BooleanField(required=False, initial=False, label="Save this context to my profile")
+
 
 class GenerateByTemplateForm(forms.Form):
     policy_template = forms.ModelChoiceField(
@@ -7,9 +23,6 @@ class GenerateByTemplateForm(forms.Form):
         required=True,
         label="Policy Template"
     )
-    org_name = forms.CharField(required=False, initial="Amoeba Labs", label="Organization Name")
-    org_size = forms.ChoiceField(choices=[("small","Small"),("medium","Medium"),("large","Large")], initial="small")
-    environment = forms.ChoiceField(choices=[("cloud","Cloud"),("on-prem","On-Prem"),("hybrid","Hybrid")], initial="cloud")
     max_words = forms.IntegerField(required=False, initial=600, min_value=100, max_value=5000)
 
     def clean(self):
@@ -27,9 +40,6 @@ class BatchGenerateForm(forms.Form):
         label="Select Policy Templates",
         widget=forms.CheckboxSelectMultiple
     )
-    org_name = forms.CharField(required=False, initial="Amoeba Labs", label="Organization Name")
-    org_size = forms.ChoiceField(choices=[("small","Small"),("medium","Medium"),("large","Large")], initial="small")
-    environment = forms.ChoiceField(choices=[("cloud","Cloud"),("on-prem","On-Prem"),("hybrid","Hybrid")], initial="cloud")
     max_words = forms.IntegerField(required=False, initial=600, min_value=100, max_value=5000)
 
 
