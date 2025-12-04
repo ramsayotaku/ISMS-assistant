@@ -4,12 +4,14 @@ from django.views.generic import ListView, DetailView, FormView, UpdateView, Cre
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.utils import timezone
+import logging
 
 from .models import PolicyTemplate, GeneratedPolicy, PromptTemplate, CompanyProfile, Control
 from .forms import GenerateByTemplateForm, BatchGenerateForm, PolicyTemplateForm, GeneratedPolicyEditForm
 from .services.openai_client import OpenAIClient
 from .services.prompt_builder import build_prompt
 
+logger = logging.getLogger(__name__)
 
 class PolicyTemplateListView(LoginRequiredMixin, ListView):
     model = PolicyTemplate
