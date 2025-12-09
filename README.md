@@ -1,12 +1,8 @@
-
-# <img src="https://via.placeholder.com/800x180.png?text=ISO+27001+AI+Policy+Generator" width="100%">
-
 # ISO 27001 AI Policy Generator
 
 A Django + OpenAI powered system that generates, validates, and manages ISO/IEC 27001:2022 security policies using Large Language Models.
 This tool automates Annex A policy drafting, performs structural and control-based validation, and supports batch generation and internal ISMS workflows.
 
----
 
 ## About This Project
 
@@ -22,7 +18,6 @@ It automates the creation of ISO 27001:2022–aligned documentation using genera
 
 The goal is to reduce manual effort in writing and reviewing security policies while maintaining audit-friendly quality.
 
----
 
 ## Key Features
 
@@ -41,27 +36,6 @@ The goal is to reduce manual effort in writing and reviewing security policies w
 * **Login & Authentication**
 * **OpenAI API v1 compatible client**
 
----
-
-## Screenshots
-
-> Add your screenshots here once UI is ready.
-
-Example placeholders:
-
-### Dashboard
-
-<img src="https://via.placeholder.com/900x450.png?text=Dashboard+Screenshot" width="650">
-
-### Policy Generation
-
-<img src="https://via.placeholder.com/900x450.png?text=Policy+Generation+Form" width="650">
-
-### Validation Output
-
-<img src="https://via.placeholder.com/900x450.png?text=Validation+Results" width="650">
-
----
 
 ## Installation
 
@@ -72,7 +46,6 @@ Example placeholders:
 * OpenAI Python SDK ≥ 1.0
 * SQLite (default) or PostgreSQL
 
----
 
 ## Setup
 
@@ -97,7 +70,6 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
----
 
 ## Environment Variables
 
@@ -112,7 +84,6 @@ OPENAI_API_KEY=your-openai-api-key
 OPENAI_DEFAULT_MODEL=gpt-4o-mini
 ```
 
----
 
 ## Database Setup
 
@@ -122,7 +93,6 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
----
 
 ## Running the Application
 
@@ -138,7 +108,6 @@ Open:
 http://127.0.0.1:8000/
 ```
 
----
 
 ## Import Annex A Mapping (Excel)
 
@@ -182,8 +151,6 @@ Results stored in `ValidationResult`.
 
 Policies written in Markdown are rendered as HTML through a custom Django filter that safely sanitizes output.
 
----
-
 ## Directory Overview
 
 ```
@@ -202,8 +169,6 @@ generator/
 └── management/commands/
     └── import_mapping.py  # Excel-based Annex A control importer
 ```
-
----
 
 ## Troubleshooting
 
@@ -230,28 +195,3 @@ pip install markdown bleach
 
 Handled by patched OpenAI client with `.to_dict()` fallback.
 
----
-
-## Future Enhancements
-
-* Semantic validation (embedding-based)
-* Versioning + diff viewer
-* Multi-model support (Gemini, Claude, HF)
-* Export controls → policy traceability matrix
-* PDF/DOCX export modules
-
----
-
-## Academic Context
-
-Developed as part of an MSc Cybersecurity thesis:
-
-**"Evaluating the Effectiveness of Generative AI for ISO/IEC 27001:2022 Policy Automation"**
-
----
-
-## License
-
-MIT License (or choose your own)
-
----
